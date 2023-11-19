@@ -23,7 +23,7 @@ public class Player : MonoBehaviour
                             LayerMask.NameToLayer("AreaVerdeTilemap") ? GameObject.FindObjectOfType<TilemapCollider2D>() : null;
     }
 
-    void Update()
+     void Update()
     {
         Move();
     }
@@ -54,13 +54,25 @@ public class Player : MonoBehaviour
         if (isclimbing && !IsGrounded())
         {
             autoClimb = true;
+
+            
+            if (V > 0f)
+            {
+                anim.SetBool("IsClimbing", false); 
+                anim.SetBool("ClimbingUp", true); 
+            }
+            else
+            {
+                anim.SetBool("ClimbingUp", false); 
+                anim.SetBool("IsClimbing", true); 
+            }
         }
         else
         {
             autoClimb = false;
+            anim.SetBool("ClimbingUp", false); 
+            anim.SetBool("IsClimbing", isclimbing);
         }
-
-        anim.SetBool("IsClimbing", isclimbing);
     }
 
     bool IsGrounded()
