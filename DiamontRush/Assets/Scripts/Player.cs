@@ -46,13 +46,23 @@ public class Player : MonoBehaviour
 
         rig.velocity = new Vector2(movement.x * Speed, movement.y * Speed);
 
-        iswalking = (Mathf.Abs(H) > 0f);
-        anim.SetBool("IsWalking", iswalking);
-
+        
+        if(IsGrounded())
+        {
+            iswalking = (Mathf.Abs(H) > 0f);
+            anim.SetBool("IsWalking", iswalking);
+        }
+        else
+        {
+            iswalking = false;
+            anim.SetBool("IsWalking", iswalking);
+        }
+        
         isclimbing = areaVerdeCollider != null && areaVerdeCollider.OverlapPoint(transform.position) && !autoClimb;
-
+        
         if (isclimbing && !IsGrounded())
         {
+            Debug.Log("to entrando");
             autoClimb = true;
 
             if (V > 0f)
@@ -65,11 +75,18 @@ public class Player : MonoBehaviour
                 anim.SetBool("IsClimbing", false);
                 anim.SetBool("ClimbingDown", true);
             }
+            
+            else if (Mathf.Abs(H) > 0)
+            {
+                anim.Play("P_escaladaL");
+            
+            }
             else
             {
                 anim.SetBool("ClimbingUp", false);
                 anim.SetBool("ClimbingDown", false);
                 anim.SetBool("IsClimbing", true);
+                anim.SetBool("IsClimbing", isclimbing);
             }
         }
         else
@@ -77,12 +94,14 @@ public class Player : MonoBehaviour
             autoClimb = false;
             anim.SetBool("ClimbingUp", false);
             anim.SetBool("ClimbingDown", false);
-            anim.SetBool("IsClimbing", isclimbing);
+          
         }
+
     }
 
     bool IsGrounded()
     {
-        return Physics2D.Raycast(transform.position, Vector2.down, 0.1f, LayerMask.GetMask("Ground"));
+        Debug.DrawLine(transform.position, transform.position + new Vector3(0,-1f,0));
+        return Physics2D.Raycast(transform.position, Vector2.down, 1f, LayerMask.GetMask("Ground"));
     }
 }
