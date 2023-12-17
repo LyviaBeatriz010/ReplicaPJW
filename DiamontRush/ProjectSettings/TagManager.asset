@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Esc
   - AreaVerde
+  - Pedra
   layers:
   - Default
   - TransparentFX

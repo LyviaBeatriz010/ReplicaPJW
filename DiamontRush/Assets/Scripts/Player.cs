@@ -10,6 +10,10 @@ public class Player : MonoBehaviour
     private Animator anim;
     private bool isInAreaVerde;
 
+    private bool isCollidingWithPedra;
+    
+    private bool isCollidingWithPedraDirection;
+
     void Start()
     {
         rig = GetComponent<Rigidbody2D>();
@@ -50,6 +54,23 @@ public class Player : MonoBehaviour
         }
         
         }
+    
+    
+         if (isCollidingWithPedra || (isCollidingWithPedraDirection && Mathf.Abs(Input.GetAxis("Horizontal")) > 0.1f))
+        {
+            anim.SetInteger("transition", 6);
+        }
+        else if(IsGrounded() && Input.GetAxis("Horizontal") == 0 )
+        {
+            
+            anim.SetInteger("transition", 0); 
+        }
+
+        else if (!IsGrounded())
+        {
+            isInAreaVerde = true;
+        }
+
     }
 
     void Move()
@@ -104,6 +125,7 @@ public class Player : MonoBehaviour
         {
             isInAreaVerde = true;
         }
+    
     }
 
     void OnTriggerExit2D(Collider2D other)
@@ -113,5 +135,40 @@ public class Player : MonoBehaviour
             isInAreaVerde = false;
             anim.SetInteger("transition", 0);
         }
+    
     }
+
+    
+    void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Pedra"))
+        {
+            Vector2 contactPoint = collision.contacts[0].point;
+            Vector2 center = collision.collider.bounds.center;
+
+           
+            if ((contactPoint.x > center.x && Input.GetAxis("Horizontal") > 0) ||
+                (contactPoint.x < center.x && Input.GetAxis("Horizontal") < 0))
+            {
+                isCollidingWithPedraDirection = true;
+            }
+            else
+            {
+                isCollidingWithPedraDirection = false;
+            }
+
+            isCollidingWithPedra = true;
+        }
+    }
+
+    void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Pedra"))
+        {
+            isCollidingWithPedra = false;
+            isCollidingWithPedraDirection = false;
+        }
+    }
+
+
 }
