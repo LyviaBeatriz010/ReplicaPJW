@@ -8,24 +8,48 @@ public class Player : MonoBehaviour
     public int Speed;
     private Rigidbody2D rig;
     private Animator anim;
-    private bool iswalking;
-    private bool isclimbing;
-    private TilemapCollider2D areaVerdeCollider;
-
-    private bool autoClimb;
+    private bool isInAreaVerde;
 
     void Start()
     {
         rig = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-
-        areaVerdeCollider = GameObject.FindObjectOfType<TilemapCollider2D>().gameObject.layer ==
-                            LayerMask.NameToLayer("AreaVerdeTilemap") ? GameObject.FindObjectOfType<TilemapCollider2D>() : null;
     }
 
     void Update()
     {
         Move();
+
+        if (isInAreaVerde)
+        {
+            if (Input.GetAxis("Vertical") > 0)
+            {
+                anim.SetInteger("transition", 5);
+            }
+            else if (Input.GetAxis("Vertical") < 0)
+            {
+                anim.SetInteger("transition", 3);
+            }
+            else if (Input.GetAxis("Horizontal") != 0)
+            {
+                anim.SetInteger("transition", 4);
+            }
+            else if (!IsGrounded())
+            {
+                anim.SetInteger("transition", 2);
+            }
+        
+
+            if (Input.GetAxis("Horizontal") > 0)
+        {
+            transform.eulerAngles = new Vector3(0f, 0f, 0f);
+        }
+        else if (Input.GetAxis("Horizontal") < 0)
+        {
+            transform.eulerAngles = new Vector3(0f, 180f, 0f); 
+        }
+        
+        }
     }
 
     void Move()
@@ -46,62 +70,48 @@ public class Player : MonoBehaviour
 
         rig.velocity = new Vector2(movement.x * Speed, movement.y * Speed);
 
-        
-        if(IsGrounded())
+        if (IsGrounded())
         {
-            iswalking = (Mathf.Abs(H) > 0f);
-            anim.SetBool("IsWalking", iswalking);
-        }
-        else
-        {
-            iswalking = false;
-            anim.SetBool("IsWalking", iswalking);
-        }
-        
-        isclimbing = areaVerdeCollider != null && areaVerdeCollider.OverlapPoint(transform.position) && !autoClimb;
-        
-        if (isclimbing && !IsGrounded())
-        {
-            Debug.Log("to entrando");
-            autoClimb = true;
-
-            if (V > 0f)
+            if (Mathf.Approximately(H, 0) && Mathf.Approximately(V, 0))
             {
-                anim.SetBool("IsClimbing", false);
-                anim.SetBool("ClimbingUp", true);
-            }
-            else if (V < 0f)
-            {
-                anim.SetBool("IsClimbing", false);
-                anim.SetBool("ClimbingDown", true);
-            }
-            
-            else if (Mathf.Abs(H) > 0)
-            {
-                anim.Play("P_escaladaL");
-            
+                anim.SetInteger("transition", 0);
             }
             else
             {
-                anim.SetBool("ClimbingUp", false);
-                anim.SetBool("ClimbingDown", false);
-                anim.SetBool("IsClimbing", true);
-                anim.SetBool("IsClimbing", isclimbing);
+                anim.SetInteger("transition", 1);
+            
+             if (Input.GetAxis("Horizontal") > 0)
+                  {
+                     transform.eulerAngles = new Vector3(0f, 0f, 0f);
+                  }
+            else if (Input.GetAxis("Horizontal") < 0)
+                 {
+                    transform.eulerAngles = new Vector3(0f, 180f, 0f); 
+                 }
             }
         }
-        else
-        {
-            autoClimb = false;
-            anim.SetBool("ClimbingUp", false);
-            anim.SetBool("ClimbingDown", false);
-          
-        }
-
     }
 
     bool IsGrounded()
     {
-        Debug.DrawLine(transform.position, transform.position + new Vector3(0,-1f,0));
+        Debug.DrawLine(transform.position, transform.position + new Vector3(0, -1f, 0));
         return Physics2D.Raycast(transform.position, Vector2.down, 1f, LayerMask.GetMask("Ground"));
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("AreaVerde"))
+        {
+            isInAreaVerde = true;
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("AreaVerde"))
+        {
+            isInAreaVerde = false;
+            anim.SetInteger("transition", 0);
+        }
     }
 }
