@@ -56,22 +56,38 @@ public class Player : MonoBehaviour
         }
     
     
-         if (isCollidingWithPedra || (isCollidingWithPedraDirection && Mathf.Abs(Input.GetAxis("Horizontal")) > 0.1f))
+         if (isCollidingWithPedra && Mathf.Abs(Input.GetAxis("Horizontal")) > 0.1f)
         {
             anim.SetInteger("transition", 6);
         }
-        else if(IsGrounded() && Input.GetAxis("Horizontal") == 0 )
+        else if (!isInAreaVerde) 
         {
-            
-            anim.SetInteger("transition", 0); 
-        }
+            if (IsGrounded())
+            {
+                float H = Input.GetAxis("Horizontal");
+                float V = Input.GetAxis("Vertical");
 
-        else if (!IsGrounded())
-        {
-            isInAreaVerde = true;
-        }
+                if (Mathf.Approximately(H, 0) && Mathf.Approximately(V, 0))
+                {
+                    anim.SetInteger("transition", 0);
+                }
+                else
+                {
+                    anim.SetInteger("transition", 1);
 
+                    if (Input.GetAxis("Horizontal") > 0)
+                    {
+                        transform.eulerAngles = new Vector3(0f, 0f, 0f);
+                    }
+                    else if (Input.GetAxis("Horizontal") < 0)
+                    {
+                        transform.eulerAngles = new Vector3(0f, 180f, 0f);
+                    }
+                }
+            }
+        }
     }
+
 
     void Move()
     {
@@ -146,7 +162,6 @@ public class Player : MonoBehaviour
             Vector2 contactPoint = collision.contacts[0].point;
             Vector2 center = collision.collider.bounds.center;
 
-           
             if ((contactPoint.x > center.x && Input.GetAxis("Horizontal") > 0) ||
                 (contactPoint.x < center.x && Input.GetAxis("Horizontal") < 0))
             {
@@ -161,14 +176,14 @@ public class Player : MonoBehaviour
         }
     }
 
-    void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Pedra"))
+        void OnCollisionExit2D(Collision2D collision)
         {
-            isCollidingWithPedra = false;
-            isCollidingWithPedraDirection = false;
+            if (collision.gameObject.CompareTag("Pedra"))
+            {
+                isCollidingWithPedra = false;
+                isCollidingWithPedraDirection = false;
+            }
         }
-    }
 
 
 }
