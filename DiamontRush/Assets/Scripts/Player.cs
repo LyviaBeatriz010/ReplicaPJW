@@ -11,8 +11,7 @@ public class Player : MonoBehaviour
     private bool isInAreaVerde;
 
     private bool isCollidingWithPedra;
-    
-    private bool isCollidingWithPedraDirection;
+    private bool EmCimaDaPedra = false;
 
     void Start()
     {
@@ -23,8 +22,19 @@ public class Player : MonoBehaviour
     void Update()
     {
         Move();
-
-        if (isInAreaVerde)
+        if (isCollidingWithPedra && Mathf.Abs(Input.GetAxis("Horizontal")) > 0.1f)
+        {
+            if (EmCimaDaPedra)
+            {
+                anim.SetInteger("transition", 1); 
+            }
+            else
+            {
+                anim.SetInteger("transition", 6);
+            }
+            
+        }
+        else if (isInAreaVerde)
         {
             if (Input.GetAxis("Vertical") > 0)
             {
@@ -45,20 +55,14 @@ public class Player : MonoBehaviour
         
 
             if (Input.GetAxis("Horizontal") > 0)
-        {
-            transform.eulerAngles = new Vector3(0f, 0f, 0f);
-        }
-        else if (Input.GetAxis("Horizontal") < 0)
-        {
-            transform.eulerAngles = new Vector3(0f, 180f, 0f); 
-        }
+            {
+                transform.eulerAngles = new Vector3(0f, 0f, 0f);
+            }
+            else if (Input.GetAxis("Horizontal") < 0)
+            {
+                transform.eulerAngles = new Vector3(0f, 180f, 0f); 
+            }
         
-        }
-    
-    
-         if (isCollidingWithPedra && Mathf.Abs(Input.GetAxis("Horizontal")) > 0.1f)
-        {
-            anim.SetInteger("transition", 6);
         }
         else if (!isInAreaVerde) 
         {
@@ -135,6 +139,15 @@ public class Player : MonoBehaviour
         return Physics2D.Raycast(transform.position, Vector2.down, 1f, LayerMask.GetMask("Ground"));
     }
 
+    bool IsPedra()
+    {
+        bool isground = IsGrounded();
+        isground= true;
+        return Physics2D.Raycast(transform.position, Vector2.down, 1f, LayerMask.GetMask("Pedrinha"));
+        
+    }
+
+    
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("AreaVerde"))
@@ -161,27 +174,43 @@ public class Player : MonoBehaviour
         {
             Vector2 contactPoint = collision.contacts[0].point;
             Vector2 center = collision.collider.bounds.center;
-
-            if ((contactPoint.x > center.x && Input.GetAxis("Horizontal") > 0) ||
+            
+            /*if ((contactPoint.x > center.x && Input.GetAxis("Horizontal") > 0) ||
                 (contactPoint.x < center.x && Input.GetAxis("Horizontal") < 0))
             {
-                isCollidingWithPedraDirection = true;
+                
+                
             }
             else
             {
-                isCollidingWithPedraDirection = false;
-            }
+                
+            }*/
 
             isCollidingWithPedra = true;
+            
+            if(contactPoint.y > center.y && Input.GetAxis("Horizontal") > 0)
+            {
+                EmCimaDaPedra = true;
+               //anim.SetInteger("transition", 1);
+               Debug.Log("Estou em cima da pedra");
+            }
+            else
+            {
+                EmCimaDaPedra = false;
+            }
         }
+        
+        
+        
     }
+    
+    
 
         void OnCollisionExit2D(Collision2D collision)
         {
             if (collision.gameObject.CompareTag("Pedra"))
             {
                 isCollidingWithPedra = false;
-                isCollidingWithPedraDirection = false;
             }
         }
 
