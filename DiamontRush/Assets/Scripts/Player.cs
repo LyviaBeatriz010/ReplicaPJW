@@ -13,6 +13,8 @@ public class Player : MonoBehaviour
     private bool isCollidingWithPedra;
     private bool EmCimaDaPedra = false;
 
+    private bool isPushingPedra = false;
+
     void Start()
     {
         rig = GetComponent<Rigidbody2D>();
@@ -139,13 +141,7 @@ public class Player : MonoBehaviour
         return Physics2D.Raycast(transform.position, Vector2.down, 1f, LayerMask.GetMask("Ground"));
     }
 
-    bool IsPedra()
-    {
-        bool isground = IsGrounded();
-        isground= true;
-        return Physics2D.Raycast(transform.position, Vector2.down, 1f, LayerMask.GetMask("Pedrinha"));
-        
-    }
+   
 
     
     void OnTriggerEnter2D(Collider2D other)
@@ -168,51 +164,53 @@ public class Player : MonoBehaviour
     }
 
     
-    void OnCollisionStay2D(Collision2D collision)
+     void OnCollisionStay2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Pedra"))
+        if (collision.gameObject.CompareTag("Pedra") && !isPushingPedra) 
         {
             Vector2 contactPoint = collision.contacts[0].point;
             Vector2 center = collision.collider.bounds.center;
             
-            /*if ((contactPoint.x > center.x && Input.GetAxis("Horizontal") > 0) ||
-                (contactPoint.x < center.x && Input.GetAxis("Horizontal") < 0))
-            {
-                
-                
-            }
-            else
-            {
-                
-            }*/
-
             isCollidingWithPedra = true;
-            
-            if(contactPoint.y > center.y && Input.GetAxis("Horizontal") > 0)
+
+            if(contactPoint.y > center.y && Input.GetAxis("Vertical") < 0)
             {
                 EmCimaDaPedra = true;
-               //anim.SetInteger("transition", 1);
-               Debug.Log("Estou em cima da pedra");
+                isPushingPedra = true; 
+               
+
+                if (Input.GetAxis("Horizontal") > 0)
+                {
+                    transform.eulerAngles = new Vector3 (0f, 0f, 0f);
+                    
+                    Debug.Log("Estou em cima da pedra e pressionando para a direita");
+                }
+                else if (Input.GetAxis("Horizontal") < 0)
+                {
+                    transform.eulerAngles = new Vector3 (0f, 180f, 0f);
+                    
+                    Debug.Log("Estou em cima da pedra e pressionando para a esquerda");
+                }
+                else
+                {
+                   
+                    Debug.Log("Estou em cima da pedra, mas sem movimento horizontal");
+                }
             }
             else
             {
                 EmCimaDaPedra = false;
             }
         }
-        
-        
-        
     }
-    
-    
 
-        void OnCollisionExit2D(Collision2D collision)
+   
+    void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Pedra"))
         {
-            if (collision.gameObject.CompareTag("Pedra"))
-            {
-                isCollidingWithPedra = false;
-            }
+            isCollidingWithPedra = false;
+            isPushingPedra = false; 
         }
-
-
+    }   
 }
