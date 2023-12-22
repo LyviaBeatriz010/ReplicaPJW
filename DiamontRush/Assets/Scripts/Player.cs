@@ -16,6 +16,11 @@ public class Player : MonoBehaviour
 
     private bool isPushingPedra = false;
 
+    private Vector2 contactPoint;
+    private Vector2 center;
+
+    public int damage = 1;
+
     void Start()
     {
         rig = GetComponent<Rigidbody2D>();
@@ -184,8 +189,8 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Pedra") && !isPushingPedra) 
         {
-            Vector2 contactPoint = collision.contacts[0].point;
-            Vector2 center = collision.collider.bounds.center;
+            contactPoint = collision.contacts[0].point;
+            center = collision.collider.bounds.center;
             
             isCollidingWithPedra = true;
 
@@ -216,15 +221,10 @@ public class Player : MonoBehaviour
             else
             {
                 EmCimaDaPedra = false;
+                StartCoroutine(contagemRegressiva());
             }
-
-
-            if (contactPoint.y < center.y)
-            {
-               // ajeitar ainda o dano 
-            }
-        
-        
+            
+           
         }
     }
 
@@ -236,5 +236,16 @@ public class Player : MonoBehaviour
             isCollidingWithPedra = false;
             isPushingPedra = false; 
         }
-    }   
+    }
+
+    IEnumerator contagemRegressiva()
+    {
+       
+        yield return new WaitForSeconds(2); 
+        
+        if (contactPoint.y < center.y)
+        {
+           Damage(damage);
+        }
+    }
 }
