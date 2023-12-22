@@ -5,6 +5,7 @@ using UnityEngine.Tilemaps;
 
 public class Player : MonoBehaviour
 {
+    public int Health = 3;
     public int Speed;
     private Rigidbody2D rig;
     private Animator anim;
@@ -95,6 +96,19 @@ public class Player : MonoBehaviour
     }
 
 
+
+    public void Damage(int dmg)
+    {
+        Health -= dmg;
+
+        if (Health <= 0)
+        {
+            // morre
+        }
+    }
+    
+    
+    
     void Move()
     {
         float H = Input.GetAxis("Horizontal");
@@ -201,6 +215,14 @@ public class Player : MonoBehaviour
             {
                 EmCimaDaPedra = false;
             }
+
+
+            if (contactPoint.y < center.y)
+            {
+               // ajeitar ainda o dano 
+            }
+        
+        
         }
     }
 
