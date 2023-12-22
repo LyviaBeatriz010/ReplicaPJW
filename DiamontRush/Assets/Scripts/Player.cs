@@ -20,6 +20,8 @@ public class Player : MonoBehaviour
     {
         rig = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        
+        GameController.instance.AtualizandoVidas(Health);
     }
 
     void Update()
