@@ -21,10 +21,19 @@ public class Player : MonoBehaviour
 
     public int damage = 1;
 
+    public int maxHealth = 4;
+    public int currentHealth = 4;
+
+    private bool isCountingDown = false;
+
+    public HealthUI healthUI;
+
     void Start()
     {
         rig = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+
+         healthUI.UpdateHealthUI(currentHealth);
         
         
     }
@@ -104,13 +113,16 @@ public class Player : MonoBehaviour
 
 
 
-    public void Damage(int dmg)
+    public void Damage(int damage)
     {
-        Health -= dmg;
+        currentHealth -= damage;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
 
-        if (Health <= 0)
+        healthUI.UpdateHealthUI(currentHealth);
+
+        if (currentHealth <= 0)
         {
-            // morre
+            // Morre
         }
     }
     
@@ -239,11 +251,14 @@ public class Player : MonoBehaviour
 
     IEnumerator ContagemRegressiva()
     {
+        isCountingDown = true;
+        anim.SetInteger("transition", 7);
         yield return new WaitForSeconds(2f);
 
         if (isCollidingWithPedra && contactPoint.y < center.y)
         {
             Damage(damage);
         }
+        isCountingDown = false;
     }
 }
