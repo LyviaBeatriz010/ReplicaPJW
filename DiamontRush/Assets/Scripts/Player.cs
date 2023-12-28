@@ -5,7 +5,7 @@ using UnityEngine.Tilemaps;
 
 public class Player : MonoBehaviour
 {
-    public int Health = 3;
+    public int Health = 4;
     public int Speed;
     private Rigidbody2D rig;
     private Animator anim;
@@ -26,7 +26,7 @@ public class Player : MonoBehaviour
         rig = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         
-        GameController.instance.AtualizandoVidas(Health);
+        
     }
 
     void Update()
@@ -194,7 +194,12 @@ public class Player : MonoBehaviour
             
             isCollidingWithPedra = true;
 
-            if(contactPoint.y > center.y && Input.GetAxis("Vertical") < 0)
+            if (contactPoint.y < center.y)
+            {
+                StartCoroutine(ContagemRegressiva());
+            }
+           
+           else if(contactPoint.y > center.y && Input.GetAxis("Vertical") < 0)
             {
                 EmCimaDaPedra = true;
                 isPushingPedra = true; 
@@ -218,13 +223,7 @@ public class Player : MonoBehaviour
                     Debug.Log("Estou em cima da pedra, mas sem movimento horizontal");
                 }
             }
-            else
-            {
-                EmCimaDaPedra = false;
-                StartCoroutine(contagemRegressiva());
-            }
             
-           
         }
     }
 
@@ -238,14 +237,13 @@ public class Player : MonoBehaviour
         }
     }
 
-    IEnumerator contagemRegressiva()
+    IEnumerator ContagemRegressiva()
     {
-       
-        yield return new WaitForSeconds(2); 
-        
-        if (contactPoint.y < center.y)
+        yield return new WaitForSeconds(2f);
+
+        if (isCollidingWithPedra && contactPoint.y < center.y)
         {
-           Damage(damage);
+            Damage(damage);
         }
     }
 }
