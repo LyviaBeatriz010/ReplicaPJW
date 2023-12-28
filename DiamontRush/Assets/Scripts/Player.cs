@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -28,12 +30,18 @@ public class Player : MonoBehaviour
 
     public HealthUI healthUI;
 
+    public GameObject blackScreen;
+
+    public float fadeDuration = 4;
+
     void Start()
     {
         rig = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
 
          healthUI.UpdateHealthUI(currentHealth);
+
+         blackScreen.SetActive(false);
         
         
     }
@@ -123,6 +131,10 @@ public class Player : MonoBehaviour
         if (currentHealth <= 0)
         {
             // Morre
+            StartCoroutine(FadeToBlack());
+            anim.SetInteger("transition", 8);
+           // blackScreen.SetActive(true);
+            StartCoroutine(RestartGame());
         }
     }
     
@@ -261,4 +273,37 @@ public class Player : MonoBehaviour
         }
         isCountingDown = false;
     }
+
+    
+    IEnumerator RestartGame()
+    {
+        blackScreen.SetActive(true);
+
+         yield return new WaitForSeconds(1f); 
+
+        SceneManager.LoadScene("SampleScene");
+
+        blackScreen.SetActive(false);
+
+    }
+
+     IEnumerator FadeToBlack()
+    {
+        blackScreen.SetActive(true);
+
+        Image img = blackScreen.GetComponent<Image>();
+        Color color = img.color;
+
+        float timer = 0f;
+        while (timer < fadeDuration)
+        {
+            timer += Time.deltaTime;
+            color.a = Mathf.Lerp(0f, 1f, timer / fadeDuration); 
+            img.color = color;
+            yield return null;
+        }
+        color.a = 1f; 
+        img.color = color;
+    }
+
 }
