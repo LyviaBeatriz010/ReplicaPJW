@@ -30,9 +30,9 @@ public class Player : MonoBehaviour
 
     public HealthUI healthUI;
 
-    public GameObject blackScreen;
+    private bool isDead = false;
 
-    public float fadeDuration = 4;
+    
 
     void Start()
     {
@@ -41,7 +41,7 @@ public class Player : MonoBehaviour
 
          healthUI.UpdateHealthUI(currentHealth);
 
-         blackScreen.SetActive(false);
+         
         
         
     }
@@ -123,19 +123,22 @@ public class Player : MonoBehaviour
 
     public void Damage(int damage)
     {
-        currentHealth -= damage;
-        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+       
+       if(!isDead)
+       {
+         currentHealth -= damage;
+         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
 
-        healthUI.UpdateHealthUI(currentHealth);
+         healthUI.UpdateHealthUI(currentHealth);
 
+       }
+       
         if (currentHealth <= 0)
         {
             // Morre
-            StartCoroutine(FadeToBlack());
+            isDead = true;
             anim.SetInteger("transition", 8);
-           // blackScreen.SetActive(true);
-            StartCoroutine(RestartGame());
-        }
+        }  
     }
     
     
@@ -277,33 +280,14 @@ public class Player : MonoBehaviour
     
     IEnumerator RestartGame()
     {
-        blackScreen.SetActive(true);
+       
 
          yield return new WaitForSeconds(1f); 
 
         SceneManager.LoadScene("SampleScene");
 
-        blackScreen.SetActive(false);
-
+       
     }
 
-     IEnumerator FadeToBlack()
-    {
-        blackScreen.SetActive(true);
-
-        Image img = blackScreen.GetComponent<Image>();
-        Color color = img.color;
-
-        float timer = 0f;
-        while (timer < fadeDuration)
-        {
-            timer += Time.deltaTime;
-            color.a = Mathf.Lerp(0f, 1f, timer / fadeDuration); 
-            img.color = color;
-            yield return null;
-        }
-        color.a = 1f; 
-        img.color = color;
-    }
-
+     
 }
