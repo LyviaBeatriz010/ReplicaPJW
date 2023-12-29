@@ -138,6 +138,7 @@ public class Player : MonoBehaviour
             // Morre
             isDead = true;
             anim.SetInteger("transition", 8);
+            StartCoroutine(RestartGame());
         }  
     }
     
