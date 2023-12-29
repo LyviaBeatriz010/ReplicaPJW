@@ -21,6 +21,6 @@ public class GameController : MonoBehaviour
     public void UpdateScore(int value)
     {
         Score += value;
-        scoreText.text = scoreText.ToString();
+        scoreText.text = Score.ToString();
     }
 }
