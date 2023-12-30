@@ -147,6 +147,11 @@ public class Player : MonoBehaviour
             {
                 transform.position = posInicial; 
             }
+            else
+            {
+                 SceneManager.LoadScene(0);
+            }
+       
         }
     }
     public void Damage(int damage)
@@ -172,6 +177,8 @@ public class Player : MonoBehaviour
 
                 
                 StartCoroutine(RestartGame());
+
+                deathchance = false;
             }
         }
     }

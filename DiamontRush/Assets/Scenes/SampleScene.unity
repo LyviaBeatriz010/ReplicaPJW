@@ -5918,6 +5918,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pedra (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2707214501168196631, guid: c6d65f98bb973d94daf83006796b8201, type: 3}
+      propertyPath: m_LinearDrag
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2707214501168196631, guid: c6d65f98bb973d94daf83006796b8201, type: 3}
+      propertyPath: m_Constraints
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2707214501168196631, guid: c6d65f98bb973d94daf83006796b8201, type: 3}
+      propertyPath: m_GravityScale
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c6d65f98bb973d94daf83006796b8201, type: 3}
 --- !u!1 &1247094027
