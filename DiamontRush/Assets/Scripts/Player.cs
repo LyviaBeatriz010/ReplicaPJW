@@ -34,10 +34,14 @@ public class Player : MonoBehaviour
 
     public Vector3 posInicial; // Checkpoint
 
+    private int initialHealth; // salvar a vida
+
     void Start()
     {
        posInicial = new Vector3(-5.8717f,0.4559f,0); // Checkpoint
        transform.position = posInicial; // Checkpoint
+       
+        initialHealth = currentHealth;
        
         rig = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
@@ -296,8 +300,14 @@ public class Player : MonoBehaviour
         transform.position = posInicial;
         
         // fazer recuperar a vida
+         
+        currentHealth = initialHealth;
+        isDead = false;
+        anim.SetInteger("transition", 0);
 
-         currentHealth = 4;
+        healthUI.UpdateHealthUI(currentHealth);
+
+        
 
        
     }
