@@ -32,10 +32,13 @@ public class Player : MonoBehaviour
 
     private bool isDead = false;
 
-    
+    public Vector3 posInicial; // Checkpoint
 
     void Start()
     {
+       posInicial = new Vector3(-5.8717f,0.4559f,0); // Checkpoint
+       transform.position = posInicial; // Checkpoint
+       
         rig = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
 
@@ -200,6 +203,11 @@ public class Player : MonoBehaviour
             isInAreaVerde = true;
         }
     
+        if (other.gameObject.tag == "checkPoint")
+        {
+            posInicial = other.gameObject.transform.position;
+        }
+    
     }
 
     void OnTriggerExit2D(Collider2D other)
@@ -284,8 +292,12 @@ public class Player : MonoBehaviour
        
 
          yield return new WaitForSeconds(1f); 
+        // Chekpoint parte que muda a posição
+        transform.position = posInicial;
+        
+        // fazer recuperar a vida
 
-        SceneManager.LoadScene("SampleScene");
+         currentHealth = 4;
 
        
     }
