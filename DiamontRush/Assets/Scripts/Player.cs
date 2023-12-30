@@ -36,12 +36,18 @@ public class Player : MonoBehaviour
 
     private int initialHealth; // salvar a vida
 
+   
+    public int chances = 3; // número inicial de chances 
+    public Text chancesText; // Referência ao texto que exibe as chances
+
+   
     void Start()
     {
        posInicial = new Vector3(-5.8717f,0.4559f,0); // Checkpoint
        transform.position = posInicial; // Checkpoint
        
         initialHealth = currentHealth;
+         chancesText.text = chances + "x"; 
        
         rig = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
@@ -145,7 +151,15 @@ public class Player : MonoBehaviour
             // Morre
             isDead = true;
             anim.SetInteger("transition", 8);
-            StartCoroutine(RestartGame());
+            chances--;
+           
+           StartCoroutine(RestartGame());
+
+           if (chances >= 2)
+            {
+                // Atualizar o texto das chances
+                chancesText.text = chances + "x";
+            }
         }  
     }
     
