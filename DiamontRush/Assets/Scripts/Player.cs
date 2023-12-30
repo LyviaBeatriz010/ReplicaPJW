@@ -37,9 +37,10 @@ public class Player : MonoBehaviour
     private int initialHealth; // salvar a vida
 
    
-    public int chances = 3; // número inicial de chances 
-    public Text chancesText; // Referência ao texto que exibe as chances
-
+   int chances = 3; // chances
+   public Text textChances ;
+   bool deathchance = false; 
+   
    
     void Start()
     {
@@ -47,7 +48,7 @@ public class Player : MonoBehaviour
        transform.position = posInicial; // Checkpoint
        
         initialHealth = currentHealth;
-         chancesText.text = chances + "x"; 
+        
        
         rig = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
@@ -134,35 +135,46 @@ public class Player : MonoBehaviour
 
 
 
+     void OnPlayerDeath()
+    {
+        if (!deathchance && chances > 0)
+        {
+            deathchance = true; 
+            chances--; 
+            textChances.text = chances.ToString() + "x";
+
+            if (chances > 0)
+            {
+                transform.position = posInicial; 
+            }
+        }
+    }
     public void Damage(int damage)
     {
-       
-       if(!isDead)
-       {
-         currentHealth -= damage;
-         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
-
-         healthUI.UpdateHealthUI(currentHealth);
-
-       }
-       
-        if (currentHealth <= 0)
+        if (!isDead)
         {
-            // Morre
-            isDead = true;
-            anim.SetInteger("transition", 8);
-            chances--;
-           
-           StartCoroutine(RestartGame());
+            currentHealth -= damage;
+            currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
 
-           if (chances >= 2)
+            healthUI.UpdateHealthUI(currentHealth);
+
+            if (currentHealth <= 0)
             {
-                // Atualizar o texto das chances
-                chancesText.text = chances + "x";
+                
+                isDead = true;
+                anim.SetInteger("transition", 8);
+
+                
+                if (!deathchance)
+                {
+                    OnPlayerDeath();
+                }
+
+                
+                StartCoroutine(RestartGame());
             }
-        }  
+        }
     }
-    
     
     
     void Move()

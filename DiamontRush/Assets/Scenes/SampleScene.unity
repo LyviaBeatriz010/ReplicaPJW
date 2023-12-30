@@ -4764,8 +4764,7 @@ MonoBehaviour:
   currentHealth: 4
   healthUI: {fileID: 1101285953}
   posInicial: {x: -4.765, y: 0.4559, z: 0}
-  chances: 3
-  chancesText: {fileID: 1439237519}
+  textChances: {fileID: 1439237519}
 --- !u!50 &992268643
 Rigidbody2D:
   serializedVersion: 4
