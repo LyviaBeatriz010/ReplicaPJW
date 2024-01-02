@@ -131,10 +131,32 @@ public class Player : MonoBehaviour
                 }
             }
         }
+    
+        if(Input.GetKeyDown(KeyCode.F))
+        {
+            if(!isDead)
+            {
+                isDead = true;
+                anim.SetInteger("transition", 8);
+                MortePorF();
+            }
+        }
+    
     }
 
 
 
+     void MortePorF()
+     {
+        
+            
+        transform.position = posInicial;
+        SceneManager.LoadScene(0);
+        transform.position = posInicial;
+
+            
+     }
+     
      void OnPlayerDeath()
     {
         if (!deathchance && chances > 0)
