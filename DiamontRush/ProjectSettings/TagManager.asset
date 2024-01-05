@@ -8,6 +8,7 @@ TagManager:
   - AreaVerde
   - Pedra
   - checkPoint
+  - Enemy
   layers:
   - Default
   - TransparentFX

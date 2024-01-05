@@ -1112,7 +1112,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.10560179, y: 0.4171949, z: -10}
+  m_LocalPosition: {x: -1.4961829, y: 0.44692355, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7153,7 +7153,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1592296067
 Transform:
   m_ObjectHideFlags: 0
@@ -16480,11 +16480,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8022575879599810552, guid: ef5a0c36d0ee1104aad1edb18fc1203e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.47
+      value: 15.99
       objectReference: {fileID: 0}
     - target: {fileID: 8022575879599810552, guid: ef5a0c36d0ee1104aad1edb18fc1203e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.55
+      value: -1.65
       objectReference: {fileID: 0}
     - target: {fileID: 8022575879599810552, guid: ef5a0c36d0ee1104aad1edb18fc1203e, type: 3}
       propertyPath: m_LocalPosition.z
@@ -16518,9 +16518,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8022575879599810554, guid: ef5a0c36d0ee1104aad1edb18fc1203e, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8022575879599810556, guid: ef5a0c36d0ee1104aad1edb18fc1203e, type: 3}
       propertyPath: m_Name
       value: Cobra_Verde
+      objectReference: {fileID: 0}
+    - target: {fileID: 8022575879599810556, guid: ef5a0c36d0ee1104aad1edb18fc1203e, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ef5a0c36d0ee1104aad1edb18fc1203e, type: 3}

@@ -267,6 +267,12 @@ public class Player : MonoBehaviour
             posInicial = other.gameObject.transform.position;
         }
     
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            Damage(damage);
+        }
+   
+   
     }
 
     void OnTriggerExit2D(Collider2D other)
