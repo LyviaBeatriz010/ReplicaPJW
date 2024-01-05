@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2216611223104999052}
   - component: {fileID: 2216611223104999053}
   - component: {fileID: 2216611223104999054}
+  - component: {fileID: 1285011635824650908}
   m_Layer: 0
   m_Name: Moita
   m_TagString: Untagged
@@ -114,3 +115,29 @@ CircleCollider2D:
   m_Offset: {x: 0.023427758, y: 0.03384034}
   serializedVersion: 2
   m_Radius: 0.40644392
+--- !u!61 &1285011635824650908
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2216611223104999055}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.022494629, y: 0.33866656}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.74, y: 0.72}
+    newSize: {x: 0.74, y: 0.72}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.55004656, y: 0.042666912}
+  m_EdgeRadius: 0
