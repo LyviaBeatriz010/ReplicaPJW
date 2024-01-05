@@ -7,67 +7,56 @@ using TMPro;
 
 public class EfeitoDigitador : MonoBehaviour
 {
-    private TextMeshProUGUI componenteText;
-    private AudioSource  _audioSource;
-
+    private TextMeshProUGUI componenteTexto;
+    private AudioSource _audioSource;
     private string mensagemOriginal;
     public bool imprimindo;
-
     public float tempoEntreLetras = 0.08f;
-
-
 
     private void Awake()
     {
-        TryGetComponent(out componenteText);
+        TryGetComponent(out componenteTexto);
         TryGetComponent(out _audioSource);
-        mensagemOriginal = componenteText.text;
-        componenteText.text = "";
+        mensagemOriginal = componenteTexto.text;
+        componenteTexto.text = "";
     }
-
 
     private void OnEnable()
     {
         ImprimirMensagem(mensagemOriginal);
-        
     }
 
     private void OnDisable()
     {
-        componenteText.text =  mensagemOriginal;
+        componenteTexto.text = mensagemOriginal;
         StopAllCoroutines();
     }
 
     public void ImprimirMensagem(string mensagem)
     {
-        if(gameObject.activeInHierarchy)
+        if (gameObject.activeInHierarchy)
         {
-            if(imprimindo) return;
-                imprimindo = true;
-                StartCoroutine(LetraPorLetra(mensagem));
+            if (imprimindo) return;
+            imprimindo = true;
+            StartCoroutine(LetraPorLetra(mensagem));
             
         }
-
-
-
     }
-
 
     IEnumerator LetraPorLetra(string mensagem)
     {
-     string msg = "";
-     foreach(var letra in mensagem)
-     {
-        msg += letra;
-        componenteText.text = msg;
-        _audioSource.Play();
-        yield return new WaitForSeconds(tempoEntreLetras);
-     }
-   
-    imprimindo = false;
-    StopAllCoroutines();
+        string msg = "";
 
-   
+        foreach (var letra in mensagem)
+        {
+            msg += letra;
+            componenteTexto.text = msg;
+            _audioSource.Play();
+            yield return new WaitForSeconds(tempoEntreLetras);
+        }
+        
+        imprimindo = false;
+        StopAllCoroutines();
     }
 
     
